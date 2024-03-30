@@ -15,14 +15,14 @@ type BinModel struct {
 
 // NewBinModel returns a [BinModel], initialised with the
 // passed parameters.
-func NewBinModel(spot float64, ut float64, dt float64, rate float64) BinModel {
+func NewBinModel(spot float64, dt float64, ut float64, rate float64) BinModel {
 	q := (rate - dt) / (ut - dt)
 	return BinModel{spot, ut, dt, rate, q}
 }
 
 // BinModel.Price computes the price of the underlying for the given
 // expiry and number of upticks.
-func (b BinModel) Price(expiry uint, nUticks uint) float64 {
+func (b BinModel) Price(expiry int, nUticks int) float64 {
 	lu := float64(nUticks) * math.Log(1.0+b.utick)
 	ld := float64(expiry-nUticks) * math.Log(1.0+b.dtick)
 	return b.spot * math.Exp(lu+ld)

@@ -5,7 +5,7 @@ package crr
 // to be a getter method for the expiry field, [Payoff] returns
 // the option's payoff at the given price of the underlying.
 type Option interface {
-	Expiry() uint
+	Expiry() int
 	Payoff(price float64) float64
 }
 
@@ -13,10 +13,10 @@ type Option interface {
 // and implements the [Expiry] method. It serves as
 // an object to be embedded.
 type EurOption struct {
-	expiry uint
+	expiry int
 }
 
-func (v EurOption) Expiry() uint {
+func (v EurOption) Expiry() int {
 	return v.expiry
 }
 
@@ -30,7 +30,7 @@ type CallOption struct {
 // NewCallOption returns a [CallOption] initialised by the
 // two arguments expiry for the embedded [EurOption] and
 // the strike price.
-func NewCallOption(expiry uint, strike float64) CallOption {
+func NewCallOption(expiry int, strike float64) CallOption {
 	return CallOption{EurOption{expiry}, strike}
 }
 
@@ -50,7 +50,7 @@ type PutOption struct {
 
 // NewPutOption returns a [PutOption] with the given expiry
 // and strike price.
-func NewPutOption(expiry uint, strike float64) PutOption {
+func NewPutOption(expiry int, strike float64) PutOption {
 	return PutOption{EurOption{expiry}, strike}
 }
 
@@ -70,7 +70,7 @@ type DigitCall struct {
 
 // NewDigitalCall returns a [DigitCall] with expiry and
 // strike as given.
-func NewDigitCall(expiry uint, strike float64) DigitCall {
+func NewDigitCall(expiry int, strike float64) DigitCall {
 	return DigitCall{EurOption{expiry}, strike}
 }
 
@@ -90,7 +90,7 @@ type DigitPut struct {
 
 // NewDigitPut returns a [DigitPut] with expiry and
 // strike as given.
-func NewDigitPut(expiry uint, strike float64) DigitPut {
+func NewDigitPut(expiry int, strike float64) DigitPut {
 	return DigitPut{EurOption{expiry}, strike}
 }
 
@@ -111,7 +111,7 @@ type DoubleDigit struct {
 
 // NewDoubleDigit return a [DoubleDigit] object initialised with the
 // given parameters.
-func NewDoubleDigit(expiry uint, lo float64, hi float64) DoubleDigit {
+func NewDoubleDigit(expiry int, lo float64, hi float64) DoubleDigit {
 	return DoubleDigit{EurOption{expiry}, lo, hi}
 }
 
@@ -132,17 +132,17 @@ type BearSpread struct {
 
 // NewBearSpread return a [BearSpread] object initialised with the
 // given parameters.
-func NewBearSpread(expiry uint, lo float64, hi float64) BearSpread {
+func NewBearSpread(expiry int, lo float64, hi float64) BearSpread {
 	return BearSpread{EurOption{expiry}, lo, hi}
 }
 
 func (b BearSpread) Payoff(price float64) float64 {
-	if price >= b.strikeLo && price <= b.strikeHi {
-		return b.strikeHi - price
-	} else if price < b.strikeLo {
+	if price < b.strikeLo {
 		return b.strikeHi - b.strikeLo
+	} else if price > b.strikeHi {
+		return 0.0
 	}
-	return 0.0
+	return b.strikeHi - price
 }
 
 // BullSpread implements the [Option] interface for a
@@ -155,15 +155,15 @@ type BullSpread struct {
 
 // NewBullSpread return a [BullSpread] object initialised with the
 // given parameters.
-func NewBullSpread(expiry uint, lo float64, hi float64) BullSpread {
+func NewBullSpread(expiry int, lo float64, hi float64) BullSpread {
 	return BullSpread{EurOption{expiry}, lo, hi}
 }
 
 func (b BullSpread) Payoff(price float64) float64 {
-	if price >= b.strikeLo && price <= b.strikeHi {
-		return price - b.strikeLo
-	} else if price > b.strikeLo {
+	if price > b.strikeHi {
 		return b.strikeHi - b.strikeLo
+	} else if price < b.strikeLo {
+		return 0.0
 	}
-	return 0.0
+	return price - b.strikeLo
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func TestCallOption(t *testing.T) {
-	const N uint = 100
+	const N int = 100
 	call := NewCallOption(N, 103.1)
 	if call.Expiry() != N {
 		t.Errorf("expected Expiry() == %d got %v", N, call.Expiry())
@@ -22,7 +22,7 @@ func TestCallOption(t *testing.T) {
 }
 
 func TestPutOption(t *testing.T) {
-	const N uint = 100
+	const N int = 100
 	put := NewPutOption(N, 103.1)
 	if put.Expiry() != N {
 		t.Errorf("expected Expiry() == %d got %v", N, put.Expiry())
@@ -38,7 +38,7 @@ func TestPutOption(t *testing.T) {
 }
 
 func TestDigitCall(t *testing.T) {
-	const N uint = 100
+	const N int = 100
 	dcall := NewDigitCall(N, 103.1)
 	if dcall.Expiry() != N {
 		t.Errorf("expected Expiry() == %d got %v", N, dcall.Expiry())
@@ -54,7 +54,7 @@ func TestDigitCall(t *testing.T) {
 }
 
 func TestDigitPut(t *testing.T) {
-	const N uint = 100
+	const N int = 100
 	dput := NewDigitPut(N, 103.1)
 	if dput.Expiry() != N {
 		t.Errorf("expected Expiry() == %d got %v", N, dput.Expiry())
@@ -70,7 +70,7 @@ func TestDigitPut(t *testing.T) {
 }
 
 func TestDoubleDigit(t *testing.T) {
-	const N uint = 100
+	const N int = 100
 	dod := NewDoubleDigit(N, 98.2, 103.1)
 	if dod.Expiry() != N {
 		t.Errorf("expected Expiry() == %d got %v", N, dod.Expiry())
@@ -89,7 +89,7 @@ func TestDoubleDigit(t *testing.T) {
 }
 
 func TestBearSpread(t *testing.T) {
-	const N uint = 100
+	const N int = 100
 	bear := NewBearSpread(N, 98.2, 103.1)
 	if bear.Expiry() != N {
 		t.Errorf("expected Expiry() == %d got %v", N, bear.Expiry())
@@ -109,7 +109,7 @@ func TestBearSpread(t *testing.T) {
 }
 
 func TestBullSpread(t *testing.T) {
-	const N uint = 100
+	const N int = 100
 	bull := NewBullSpread(N, 98.2, 103.1)
 	if bull.Expiry() != N {
 		t.Errorf("expected Expiry() == %d got %v", N, bull.Expiry())
