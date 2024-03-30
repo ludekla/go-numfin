@@ -9,6 +9,7 @@ func main() {
 	fmt.Println("Hello CallOption!")
 
 	var call = crr.NewCallOption(100, 100.0)
+	var bm = crr.NewBinModel(100.0, 0.1, -0.1, 0.05)
 
-	fmt.Println(call, call.Payoff(101.9))
+	fmt.Println(crr.Price_by_CRR(bm, call))
 }
